@@ -279,7 +279,6 @@ const CreateBlog = () => {
                 >
                   <FiTrash2 />
                 </button>
-
                 {block.type === "text" && (
                   <ReactQuill
                     theme="snow"
@@ -289,7 +288,6 @@ const CreateBlog = () => {
                     }
                   />
                 )}
-
                 {block.type === "image" && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="border border-dashed border-atelier-ink/20 p-4 text-center">
@@ -332,57 +330,107 @@ const CreateBlog = () => {
                     </div>
                   </div>
                 )}
-
                 {/* --- SIDE-BY-SIDE RENDERER --- */}
+                // ... (imports remain the same as previous)
                 {block.type === "side-by-side-images" && (
-                  <div className="space-y-4">
-                    <span className="text-[10px] tracking-widest uppercase opacity-40">
-                      Side-by-Side Images
-                    </span>
-                    <div className="grid grid-cols-2 gap-6">
-                      {[0, 1].map((imgIndex) => (
-                        <div
-                          key={imgIndex}
-                          className="space-y-4 border-r border-atelier-ink/5 pr-4 last:border-0"
-                        >
-                          <div className="border border-dashed border-atelier-ink/20 p-4 text-center aspect-[4/5] flex items-center justify-center bg-atelier-paper/50">
-                            {block.images[imgIndex].src ? (
-                              <img
-                                src={block.images[imgIndex].src}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-atelier-ink/5 pb-2">
+                      <span className="text-[10px] tracking-[0.3em] uppercase text-atelier-tan font-bold">
+                        Asymmetric Pair Layout
+                      </span>
+                      <span className="text-[10px] tracking-widest uppercase opacity-30 italic">
+                        Modeled after: The Rake
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-12 gap-8 items-start">
+                      {/* Left Image - Larger/Dominant (7/12 cols) */}
+                      <div className="col-span-7 space-y-4">
+                        <div className="border border-atelier-ink/10 aspect-[3/4] flex items-center justify-center bg-white overflow-hidden shadow-sm">
+                          {block.images[0].src ? (
+                            <img
+                              src={block.images[0].src}
+                              className="w-full h-full object-cover grayscale"
+                            />
+                          ) : (
+                            <div className="p-4 text-center">
                               <input
                                 type="file"
-                                className="text-[10px]"
+                                className="text-[10px] w-full"
                                 onChange={(e) =>
                                   handleFileUpload(e.target.files[0], (url) => {
                                     const newImgs = [...block.images];
-                                    newImgs[imgIndex].src = url;
+                                    newImgs[0].src = url;
                                     updateContentBlock(index, {
                                       images: newImgs,
                                     });
                                   })
                                 }
                               />
-                            )}
-                          </div>
-                          <input
-                            placeholder="Caption..."
-                            className="w-full bg-transparent border-b border-atelier-ink/20 text-[10px] py-1 italic"
-                            value={block.images[imgIndex].caption}
-                            onChange={(e) => {
-                              const newImgs = [...block.images];
-                              newImgs[imgIndex].caption = e.target.value;
-                              updateContentBlock(index, { images: newImgs });
-                            }}
-                          />
+                              <p className="text-[9px] mt-2 opacity-40 uppercase tracking-tighter">
+                                Primary Feature (Left)
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      ))}
+                        <input
+                          placeholder="Primary Caption..."
+                          className="w-full bg-transparent border-b border-atelier-ink/10 text-[10px] py-2 italic font-serif"
+                          value={block.images[0].caption}
+                          onChange={(e) => {
+                            const newImgs = [...block.images];
+                            newImgs[0].caption = e.target.value;
+                            updateContentBlock(index, { images: newImgs });
+                          }}
+                        />
+                      </div>
+
+                      {/* Right Image - Narrower/Supportive (5/12 cols) */}
+                      <div className="col-span-5 space-y-4 pt-12">
+                        {" "}
+                        {/* pt-12 creates that staggered look */}
+                        <div className="border border-atelier-ink/10 aspect-[4/5] flex items-center justify-center bg-white overflow-hidden shadow-sm">
+                          {block.images[1].src ? (
+                            <img
+                              src={block.images[1].src}
+                              className="w-full h-full object-cover grayscale"
+                            />
+                          ) : (
+                            <div className="p-4 text-center">
+                              <input
+                                type="file"
+                                className="text-[10px] w-full"
+                                onChange={(e) =>
+                                  handleFileUpload(e.target.files[0], (url) => {
+                                    const newImgs = [...block.images];
+                                    newImgs[1].src = url;
+                                    updateContentBlock(index, {
+                                      images: newImgs,
+                                    });
+                                  })
+                                }
+                              />
+                              <p className="text-[9px] mt-2 opacity-40 uppercase tracking-tighter">
+                                Secondary Detail (Right)
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        <input
+                          placeholder="Secondary Caption..."
+                          className="w-full bg-transparent border-b border-atelier-ink/10 text-[10px] py-2 italic font-serif"
+                          value={block.images[1].caption}
+                          onChange={(e) => {
+                            const newImgs = [...block.images];
+                            newImgs[1].caption = e.target.value;
+                            updateContentBlock(index, { images: newImgs });
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
-
+                // ... (rest of component remains the same)
                 {block.type === "pull-quote" && (
                   <textarea
                     placeholder="Enter the pull quote..."
