@@ -89,8 +89,8 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Center Identity */}
-          <div className="absolute left-1/2 -translate-x-1/2 text-center z-10 pointer-events-none">
+          {/* Center Identity - Adjusted for Mobile Left Alignment */}
+          <div className="relative md:absolute md:left-1/2 md:-translate-x-1/2 text-center z-10 pointer-events-none">
             <Link
               to="/"
               className="text-2xl lg:text-3xl font-serif tracking-tighter uppercase italic pointer-events-auto"
@@ -99,8 +99,8 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Right Icons */}
-          <div className="flex items-center space-x-6 z-20">
+          {/* Right Icons - Reordered for Burger Far Right */}
+          <div className="flex items-center space-x-4 md:space-x-6 z-20">
             <Link
               to={isAuthenticated ? "/profile" : "/auth"}
               className="hover:text-atelier-tan transition-colors opacity-80 flex items-center gap-2 group"
@@ -113,7 +113,7 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* Bag Toggle - Updated to use Zustand */}
+            {/* Bag Toggle */}
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative hover:text-atelier-tan transition-colors opacity-80"
@@ -144,7 +144,7 @@ const Navbar = () => {
         isAuthenticated={isAuthenticated}
       />
 
-      {/* Cart Drawer - Notice how clean this is now! No props needed. */}
+      {/* Cart Drawer */}
       <CartDrawer />
     </>
   );
