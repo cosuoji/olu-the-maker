@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiTrash2, FiEdit3 } from "react-icons/fi";
-import useBlogStore from "../../store/useblogStore";
+import useBlogStore from "../../store/useBlogStore";
 import { useNavigate, Link } from "react-router-dom";
 
 const BlogAdminActions = ({ slug, onDeleteSuccess }) => {
