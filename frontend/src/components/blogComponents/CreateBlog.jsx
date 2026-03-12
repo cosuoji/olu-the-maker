@@ -1,0 +1,415 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  FiPlus,
+  FiTrash2,
+  FiImage,
+  FiType,
+  FiUpload,
+  FiBookOpen,
+  FiColumns, // Added for Side-by-Side icon
+} from "react-icons/fi";
+import useBlogStore from "../../store/useBlogStore";
+import useUserStore from "../../store/useUserStore";
+import { slugify } from "../../utils/slugify";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+
+const CreateBlog = () => {
+  const navigate = useNavigate();
+  const { user } = useUserStore();
+  const { createBlog } = useBlogStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "", // Added for grid excerpt
+    magazineIssue: "",
+    headerImageUrl: "",
+    innerImageForFeaturedUrl: "",
+    featured: false,
+    author: "Olu THE MAKER", // Editable default
+    category: "news",
+    contentBlocks: [],
+    tags: [],
+  });
+
+  // Cloudinary Upload Logic
+  const handleFileUpload = async (file, callback) => {
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", file);
+    uploadFormData.append(
+      "upload_preset",
+      import.meta.env.VITE_PRESET_NAME || "your_preset",
+    );
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: uploadFormData },
+      );
+      const data = await response.json();
+      callback(data.secure_url);
+    } catch (err) {
+      console.error("Cloudinary Upload Error:", err);
+      alert("Upload failed");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      if (!formData.title || !formData.headerImageUrl || !formData.description)
+        throw new Error(
+          "Missing required fields (Title, Header, or Description)",
+        );
+
+      const blogData = {
+        ...formData,
+        headerImage: formData.headerImageUrl,
+        innerImageForFeatured: formData.innerImageForFeaturedUrl,
+        slug: slugify(formData.title),
+        publishedAt: new Date().toISOString(),
+      };
+
+      await createBlog(blogData, user.token);
+      navigate(`/journal`);
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const updateContentBlock = (index, updates) => {
+    setFormData((prev) => {
+      const updatedBlocks = [...prev.contentBlocks];
+      updatedBlocks[index] = { ...updatedBlocks[index], ...updates };
+      return { ...prev, contentBlocks: updatedBlocks };
+    });
+  };
+
+  const addBlock = (type) => {
+    const defaults = {
+      text: { type: "text", content: "" },
+      image: {
+        type: "image",
+        src: "",
+        alt: "",
+        layout: "default",
+        caption: "",
+      },
+      "pull-quote": { type: "pull-quote", content: "", author: "" },
+      "side-by-side-images": {
+        type: "side-by-side-images",
+        images: [
+          { src: "", alt: "", caption: "" },
+          { src: "", alt: "", caption: "" },
+        ],
+      },
+    };
+    setFormData((prev) => ({
+      ...prev,
+      contentBlocks: [...prev.contentBlocks, defaults[type]],
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-atelier-paper text-atelier-ink py-12 px-6">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-12 border-b border-atelier-ink/10 pb-6">
+          <h1 className="text-4xl font-serif italic mb-2">Draft Entry</h1>
+          <p className="text-[10px] tracking-[0.2em] uppercase text-atelier-ink/60 underline decoration-atelier-tan">
+            Atelier Content Management System
+          </p>
+        </header>
+
+        <form onSubmit={handleSubmit} className="space-y-12">
+          {/* Main Info */}
+          <div className="space-y-6">
+            <input
+              type="text"
+              placeholder="Article Title..."
+              value={formData.title}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, title: e.target.value }))
+              }
+              className="w-full bg-transparent text-3xl font-serif italic outline-none border-none"
+              required
+            />
+
+            {/* Description / Excerpt Field */}
+            <textarea
+              placeholder="Enter brief description (Excerpt for the grid)..."
+              value={formData.description}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, description: e.target.value }))
+              }
+              className="w-full bg-transparent border-b border-atelier-ink/10 outline-none text-sm font-serif italic py-2 resize-none h-20"
+              required
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-atelier-tan/10 p-6 border border-atelier-tan/30 flex items-center gap-6">
+                <FiBookOpen className="text-atelier-tan w-6 h-6" />
+                <div className="flex-1">
+                  <label className="block text-[10px] tracking-[0.2em] uppercase text-atelier-tan mb-1">
+                    Magazine Connection
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Issue No. 04"
+                    value={formData.magazineIssue}
+                    onChange={(e) =>
+                      setFormData((p) => ({
+                        ...p,
+                        magazineIssue: e.target.value,
+                      }))
+                    }
+                    className="w-full bg-transparent border-b border-atelier-tan/50 outline-none text-sm py-1"
+                  />
+                </div>
+              </div>
+
+              {/* Author Field */}
+              <div className="bg-atelier-ink/5 p-6 border border-atelier-ink/10 flex items-center gap-6">
+                <div className="flex-1">
+                  <label className="block text-[10px] tracking-[0.2em] uppercase text-atelier-ink/40 mb-1">
+                    Author Credit
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.author}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, author: e.target.value }))
+                    }
+                    className="w-full bg-transparent border-b border-atelier-ink/20 outline-none text-sm py-1"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured Media */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <label className="text-[10px] tracking-widest uppercase">
+                Header Image (Main)
+              </label>
+              <div className="relative border border-atelier-ink/20 aspect-video flex items-center justify-center bg-white/50 overflow-hidden">
+                {formData.headerImageUrl ? (
+                  <img
+                    src={formData.headerImageUrl}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      handleFileUpload(e.target.files[0], (url) =>
+                        setFormData((p) => ({ ...p, headerImageUrl: url })),
+                      )
+                    }
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Dynamic Content Blocks */}
+          <div className="space-y-8">
+            <div className="flex justify-between items-center border-b border-atelier-ink/10 pb-2">
+              <h2 className="text-[10px] tracking-widest uppercase font-bold">
+                Editorial Composition
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  title="Text Block"
+                  onClick={() => addBlock("text")}
+                  className="p-2 border border-atelier-ink/20 hover:bg-atelier-ink hover:text-white transition-all"
+                >
+                  <FiType />
+                </button>
+                <button
+                  type="button"
+                  title="Single Image"
+                  onClick={() => addBlock("image")}
+                  className="p-2 border border-atelier-ink/20 hover:bg-atelier-ink hover:text-white transition-all"
+                >
+                  <FiImage />
+                </button>
+                <button
+                  type="button"
+                  title="Side-by-Side Images"
+                  onClick={() => addBlock("side-by-side-images")}
+                  className="p-2 border border-atelier-ink/20 hover:bg-atelier-ink hover:text-white transition-all"
+                >
+                  <FiColumns />
+                </button>
+                <button
+                  type="button"
+                  title="Pull Quote"
+                  onClick={() => addBlock("pull-quote")}
+                  className="p-2 border border-atelier-ink/20 hover:bg-atelier-ink hover:text-white transition-all"
+                >
+                  <FiPlus />
+                </button>
+              </div>
+            </div>
+
+            {formData.contentBlocks.map((block, index) => (
+              <div
+                key={index}
+                className="group relative border border-atelier-ink/10 p-8 bg-white/30"
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((p) => ({
+                      ...p,
+                      contentBlocks: p.contentBlocks.filter(
+                        (_, i) => i !== index,
+                      ),
+                    }))
+                  }
+                  className="absolute top-4 right-4 text-atelier-ink/30 hover:text-red-600 transition-colors"
+                >
+                  <FiTrash2 />
+                </button>
+
+                {block.type === "text" && (
+                  <ReactQuill
+                    theme="snow"
+                    value={block.content}
+                    onChange={(val) =>
+                      updateContentBlock(index, { content: val })
+                    }
+                  />
+                )}
+
+                {block.type === "image" && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="border border-dashed border-atelier-ink/20 p-4 text-center">
+                      {block.src ? (
+                        <img
+                          src={block.src}
+                          className="h-32 mx-auto object-cover"
+                        />
+                      ) : (
+                        <input
+                          type="file"
+                          onChange={(e) =>
+                            handleFileUpload(e.target.files[0], (url) =>
+                              updateContentBlock(index, { src: url }),
+                            )
+                          }
+                        />
+                      )}
+                    </div>
+                    <div className="space-y-4">
+                      <select
+                        className="w-full bg-transparent border-b border-atelier-ink/20 text-xs py-2"
+                        value={block.layout}
+                        onChange={(e) =>
+                          updateContentBlock(index, { layout: e.target.value })
+                        }
+                      >
+                        <option value="default">Default</option>
+                        <option value="wide">Wide</option>
+                        <option value="fullBleed">Full Bleed</option>
+                      </select>
+                      <input
+                        placeholder="Caption..."
+                        className="w-full bg-transparent border-b border-atelier-ink/20 text-xs py-2 italic font-serif"
+                        value={block.caption}
+                        onChange={(e) =>
+                          updateContentBlock(index, { caption: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* --- SIDE-BY-SIDE RENDERER --- */}
+                {block.type === "side-by-side-images" && (
+                  <div className="space-y-4">
+                    <span className="text-[10px] tracking-widest uppercase opacity-40">
+                      Side-by-Side Images
+                    </span>
+                    <div className="grid grid-cols-2 gap-6">
+                      {[0, 1].map((imgIndex) => (
+                        <div
+                          key={imgIndex}
+                          className="space-y-4 border-r border-atelier-ink/5 pr-4 last:border-0"
+                        >
+                          <div className="border border-dashed border-atelier-ink/20 p-4 text-center aspect-[4/5] flex items-center justify-center bg-atelier-paper/50">
+                            {block.images[imgIndex].src ? (
+                              <img
+                                src={block.images[imgIndex].src}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <input
+                                type="file"
+                                className="text-[10px]"
+                                onChange={(e) =>
+                                  handleFileUpload(e.target.files[0], (url) => {
+                                    const newImgs = [...block.images];
+                                    newImgs[imgIndex].src = url;
+                                    updateContentBlock(index, {
+                                      images: newImgs,
+                                    });
+                                  })
+                                }
+                              />
+                            )}
+                          </div>
+                          <input
+                            placeholder="Caption..."
+                            className="w-full bg-transparent border-b border-atelier-ink/20 text-[10px] py-1 italic"
+                            value={block.images[imgIndex].caption}
+                            onChange={(e) => {
+                              const newImgs = [...block.images];
+                              newImgs[imgIndex].caption = e.target.value;
+                              updateContentBlock(index, { images: newImgs });
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {block.type === "pull-quote" && (
+                  <textarea
+                    placeholder="Enter the pull quote..."
+                    className="w-full bg-transparent text-xl font-serif italic text-center outline-none border-none resize-none"
+                    value={block.content}
+                    onChange={(e) =>
+                      updateContentBlock(index, { content: e.target.value })
+                    }
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-end gap-6 pt-12 border-t border-atelier-ink/10">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-10 py-4 bg-atelier-ink text-white text-[10px] tracking-[0.3em] uppercase hover:bg-atelier-ink/90 transition-all"
+            >
+              {isSubmitting ? "Archiving..." : "Publish to Archive"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateBlog;

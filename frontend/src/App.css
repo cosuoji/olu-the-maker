@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+    --color-atelier-paper: #f9f7f2;
+    --color-atelier-ink: #1a1a1a;
+    --color-atelier-green: #004225;
+    --color-atelier-tan: #9e5b32;
+    --color-atelier-navy: #001f3f;
+
+    /* Typography */
+    --font-serif: "Adobe Garamond Pro", serif;
+}
+
+@font-face {
+    font-family: "Adobe Garamond Pro";
+    src: url("/fonts/AdobeGaramondPro-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@layer base {
+    body {
+        @apply bg-atelier-paper text-atelier-ink font-serif antialiased;
+    }
+}
+
+@media print {
+    /* Hide navigation, footer, and buttons */
+    nav,
+    footer,
+    .no-print,
+    button {
+        display: none !important;
+    }
+
+    /* Force the background to be white and text to be ink-black */
+    body {
+        background: white !important;
+        color: #1a1a1a !important;
+    }
+
+    /* Ensure the "Commission Confirmed" container fills the page */
+    .receipt-container {
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

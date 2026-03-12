@@ -1,0 +1,122 @@
+// emails/OrderConfirmedEmail.jsx
+import React from "react";
+import {
+  Html,
+  Body,
+  Container,
+  Text,
+  Heading,
+  Hr,
+  Section,
+  Link,
+} from "@react-email/components";
+
+export const OrderConfirmedEmail = ({ orderId, totalPrice, items }) => (
+  <Html>
+    <Body style={mainStyle}>
+      <Container style={containerStyle}>
+        <Heading style={h1Style}>Commission Authenticated.</Heading>
+        <Text style={refStyle}>REFERENCE: {orderId}</Text>
+        <Section style={summarySection}>
+          {items.map((item) => (
+            <Text key={item.id} style={itemStyle}>
+              {item.name} (QTY: {item.qty}) — ${item.price}
+            </Text>
+          ))}
+        </Section>
+        <Hr style={hrStyle} />
+        <Text style={totalStyle}>Total Value: ${totalPrice}</Text>
+        <Text style={textStyle}>
+          Your specifications have been logged. We will notify you as the
+          commission progresses.
+        </Text>
+        <Section style={btnSection}>
+          <Link
+            href={`${process.env.FRONTEND_URL}/profile`}
+            style={buttonStyle}
+          >
+            View Order
+          </Link>
+        </Section>
+      </Container>
+    </Body>
+  </Html>
+);
+
+const mainStyle = { backgroundColor: "#f9f7f2", padding: "40px 0" };
+const containerStyle = {
+  backgroundColor: "#ffffff",
+  padding: "40px",
+  border: "1px solid #1a1a1a10",
+};
+const h1Style = {
+  fontFamily: "serif",
+  fontStyle: "italic",
+  fontSize: "32px",
+  color: "#1a1a1a",
+};
+const textStyle = {
+  fontSize: "14px",
+  lineHeight: "1.6",
+  color: "#1a1a1a",
+  opacity: "0.8",
+};
+const refStyle = {
+  fontSize: "10px",
+  letterSpacing: "0.3em",
+  textTransform: "uppercase",
+  fontWeight: "bold",
+  margin: "20px 0",
+};
+const buttonStyle = {
+  backgroundColor: "#1a1a1a",
+  color: "#ffffff",
+  padding: "12px 24px",
+  textTransform: "uppercase",
+  fontSize: "10px",
+  letterSpacing: "0.2em",
+  textDecoration: "none",
+};
+const footerStyle = {
+  fontSize: "9px",
+  letterSpacing: "0.4em",
+  textAlign: "center",
+  marginTop: "40px",
+  opacity: "0.4",
+};
+
+const summarySection = {
+  margin: "32px 0",
+  padding: "24px",
+  backgroundColor: "#f9f7f2",
+  borderLeft: "2px solid #1a1a1a",
+};
+
+const itemStyle = {
+  fontSize: "12px",
+  textTransform: "uppercase",
+  letterSpacing: "0.1em",
+  color: "#1a1a1a",
+  margin: "8px 0",
+};
+
+const totalStyle = {
+  fontSize: "16px",
+  fontWeight: "bold",
+  color: "#1a1a1a",
+  marginTop: "24px",
+  marginBottom: "24px",
+  textTransform: "uppercase",
+  letterSpacing: "0.2em",
+};
+
+const hrStyle = {
+  borderTop: "1px solid #1a1a1a10",
+  margin: "32px 0",
+};
+
+const btnSection = {
+  textAlign: "center",
+  marginTop: "30px",
+  marginBottom: "30px",
+};
