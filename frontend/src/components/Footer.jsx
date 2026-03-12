@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "@formspree/react";
 import { Instagram, Youtube, Facebook } from "lucide-react";
-import AnalogClock from "../Components/AnalogClock"; // Ensure path is correct
+import AnalogClock from "../components/AnalogClock"; // Ensure path is correct
 
 const Footer = ({ navLinks = [] }) => {
   const [state, handleSubmit] = useForm("xeokgazj");
