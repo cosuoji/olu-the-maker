@@ -95,7 +95,7 @@ const Navbar = () => {
               to="/"
               className="text-2xl lg:text-3xl font-serif tracking-tighter uppercase italic pointer-events-auto"
             >
-              Olu <span className="not-italic font-normal">THE MAKER</span>
+              Olú <span className="not-italic font-normal">THE MAKER</span>
             </Link>
           </div>
 
