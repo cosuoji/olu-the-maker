@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import useSEO from "../../hooks/useSEO";
 
 const sections = [
   {
@@ -108,6 +109,12 @@ support@oluthemaker.com.
 ];
 
 const Terms = () => {
+  useSEO({
+    title: "Terms & Conditions",
+    description:
+      "Review our terms and conditions for using our services and support.",
+  });
+
   return (
     <>
       <main className="bg-atelier-paper text-atelier-ink min-h-screen">

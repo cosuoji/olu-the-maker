@@ -9,6 +9,7 @@ import {
 import useBlogStore from "../store/useBlogStore";
 import { Link } from "react-router-dom";
 import ArticleCard from "../components/ArticleCard";
+import useSEO from "../hooks/useSEO";
 
 export default function Blog() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,6 +62,11 @@ export default function Blog() {
       fetchBlogs(1);
     }
   };
+
+  useSEO({
+    title: "Blog",
+    description: "Read our latest blog posts on ",
+  });
 
   if (loading && blogs.length === 0)
     return (

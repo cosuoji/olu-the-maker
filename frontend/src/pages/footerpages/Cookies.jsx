@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import useSEO from "../../hooks/useSEO";
 
 const CookieSettingsPage = () => {
   const [currentConsent, setCurrentConsent] = useState(
@@ -20,6 +21,11 @@ const CookieSettingsPage = () => {
       },
     });
   };
+
+  useSEO({
+    title: "Cookie Settings",
+    description: "Manage your cookie preferences for this website.",
+  });
 
   return (
     <main className="bg-atelier-paper text-atelier-ink min-h-screen">

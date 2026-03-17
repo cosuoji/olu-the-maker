@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search } from "lucide-react"; // Matching your other pages
 import { glossary } from "../../data/glossaryData";
 import { motion } from "framer-motion";
+import useSEO from "../../hooks/useSEO";
 
 export default function GlossaryList() {
   const [search, setSearch] = useState("");
@@ -21,6 +22,11 @@ export default function GlossaryList() {
   }, {});
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+  useSEO({
+    title: "Glossary",
+    description: "Browse the glossary of terms used in the brand.",
+  });
 
   return (
     <main className="bg-atelier-paper text-atelier-ink min-h-screen pt-32 pb-32">

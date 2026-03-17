@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import useSEO from "../../hooks/useSEO";
 
 const sections = [
   {
@@ -95,6 +96,11 @@ support@oluthemaker.com.
 ];
 
 const Privacy = () => {
+  useSEO({
+    title: "Privacy Policy",
+    description: "Learn about our privacy practices and data protection.",
+  });
+
   return (
     <>
       <main className="bg-atelier-paper text-atelier-ink min-h-screen">

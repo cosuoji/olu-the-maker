@@ -5,6 +5,7 @@ import SizeGuide from "../components/SizeGuide";
 import useProductStore from "../store/useProductStore";
 import { PRICE_MODIFIERS } from "../utils/MasterMenu";
 import useCartStore from "../store/useCartStore";
+import useSEO from "../hooks/useSEO";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -61,6 +62,11 @@ const ProductDetail = () => {
       material: selectedMaterial,
     });
   };
+  useSEO({
+    title: product?.name,
+    description: product?.description,
+    ogImage: product?.images?.[0],
+  });
 
   if (loading)
     return (

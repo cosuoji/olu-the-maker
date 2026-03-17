@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiPlus, FiMinus, FiSearch } from "react-icons/fi";
 import { Search, ChevronDown } from "lucide-react";
+import useSEO from "../../hooks/useSEO";
 
 /* --------------------------------------------
    SHIPPING DATA
@@ -147,6 +148,11 @@ const Shipping = () => {
       });
     });
   }, []);
+
+  useSEO({
+    title: "Shipping & Delivery",
+    description: "Learn about our shipping policies and delivery times.",
+  });
 
   return (
     <>

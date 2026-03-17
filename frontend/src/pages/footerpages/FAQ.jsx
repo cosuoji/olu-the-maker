@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Search } from "lucide-react"; // Switched to Lucide for consistency
+import useSEO from "../../hooks/useSEO";
 
 /* --------------------------------------------
    FAQ DATA
@@ -178,6 +179,12 @@ const FAQ = () => {
 
     return () => document.head.removeChild(script);
   }, []);
+
+  useSEO({
+    title: "FAQ",
+    description:
+      "Find answers to frequently asked questions about our services and support.",
+  });
 
   return (
     <main className="bg-atelier-paper min-h-screen text-atelier-ink">

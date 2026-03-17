@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import useProductStore from "../store/useProductStore";
+import useSEO from "../hooks/useSEO";
 
 const FILTERS = {
   categories: ["Oxford", "Loafer", "Derby", "Boot"],
@@ -72,6 +73,11 @@ const Store = () => {
 
       return String(dbValue) === String(value);
     });
+  });
+
+  useSEO({
+    title: "Store",
+    description: "Browse our collection of bespoke and Made to Order shoes",
   });
 
   if (loading && products.length === 0) {

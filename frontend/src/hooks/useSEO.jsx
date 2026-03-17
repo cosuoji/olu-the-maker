@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const useSEO = ({ title, description, ogImage, ogType = "website" }) => {
   useEffect(() => {
     // 1. Update Page Title
-    document.title = `${title} | Abeg Fix`;
+    document.title = `${title} | Olú the Maker`;
 
     // 2. Helper function to update or create meta tags
     const setMetaTag = (attr, value, content) => {

@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { glossary } from "../data/glossaryData";
 import { motion } from "framer-motion";
+import useSEO from "../hooks/useSEO";
 
 export default function GlossaryDetail() {
   const { term } = useParams();
@@ -23,6 +24,11 @@ export default function GlossaryDetail() {
       </main>
     );
   }
+
+  useSEO({
+    title: entry.term,
+    description: entry.description,
+  });
 
   return (
     <main className="bg-atelier-paper text-atelier-ink min-h-screen pt-40 pb-32">

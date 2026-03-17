@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
+import useSEO from "../../hooks/useSEO";
 
 // Import your images
 import last1Bg from "../../assets/lasts/last1.png";
@@ -79,6 +80,11 @@ const OurLasts = () => {
     mouseX.set((e.clientX - rect.left - rect.width / 2) / rect.width);
     mouseY.set((e.clientY - rect.top - rect.height / 2) / rect.height);
   };
+
+  useSEO({
+    title: "Our Lasts",
+    description: "Discover our last shapes that mould the brand.",
+  });
 
   return (
     <div

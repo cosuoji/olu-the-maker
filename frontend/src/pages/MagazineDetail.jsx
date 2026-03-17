@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import ArticleCard from "../components/ArticleCard";
 import useProductStore from "../store/useProductStore";
 import useCartStore from "../store/useCartStore";
+import useSEO from "../hooks/useSEO";
 
 const MagazineDetail = () => {
   const { slug } = useParams();
@@ -65,6 +66,12 @@ const MagazineDetail = () => {
       format: selectedFormat,
     });
   };
+
+  useSEO({
+    title: issueData?.name,
+    description: issueData?.description,
+    ogImage: images?.[0]?.url,
+  });
 
   return (
     <main className="bg-atelier-paper text-atelier-ink min-h-screen pt-40 pb-32">

@@ -11,6 +11,7 @@ import useUserStore from "../../store/useUserStore";
 import BlogContentRenderer from "./BlogContentRenderer";
 import BlogAdminActions from "./BlogAdminActions";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import useSEO from "../../hooks/useSEO";
 
 const SingleBlogPost = () => {
   const navigate = useNavigate();
@@ -63,6 +64,12 @@ const SingleBlogPost = () => {
     }
   };
 
+  useSEO({
+    title: currentBlog.title,
+    description: currentBlog.excerpt,
+    ogImage: currentBlog.headerImage,
+  });
+
   const handleDeleteSuccess = () => {
     navigate("/blog");
   };
@@ -81,6 +88,7 @@ const SingleBlogPost = () => {
         Error retrieving archive: {error}
       </div>
     );
+
   if (!currentBlog)
     return (
       <div className="text-center py-20 font-serif italic">

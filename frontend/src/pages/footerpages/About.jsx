@@ -1,7 +1,13 @@
 import React from "react";
 import PageTransition from "../../components/PageTransition";
+import useSEO from "../../hooks/useSEO";
 
 const About = () => {
+  useSEO({
+    title: "About Us",
+    description: "Learn about our story and mission.",
+  });
+
   return (
     <>
       <PageTransition>

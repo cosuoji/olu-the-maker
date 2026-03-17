@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import useSEO from "../hooks/useSEO";
 
 const processSteps = [
   {
@@ -38,6 +39,11 @@ const processSteps = [
 ];
 
 const Bespoke = () => {
+  useSEO({
+    title: "Bespoke",
+    description: "The Art of the Commission",
+  });
+
   return (
     <main className="bg-atelier-paper text-atelier-ink min-h-screen pt-32 pb-32">
       {/* HERO SECTION */}

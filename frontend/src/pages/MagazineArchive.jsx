@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import MagazineCard from "../components/MagazineCard";
 import useProductStore from "../store/useProductStore";
+import useSEO from "../hooks/useSEO";
 
 const MagazineArchive = () => {
   const { magazines, fetchProducts, loading } = useProductStore();
@@ -8,6 +9,12 @@ const MagazineArchive = () => {
   useEffect(() => {
     fetchProducts(); // Refresh data on mount
   }, [fetchProducts]);
+
+  useSEO({
+    title: "Magazine Archive",
+    description:
+      "A seasonal exploration of footwear, philosophy, and the hands that build them.",
+  });
 
   if (loading && magazines.length === 0) {
     return (
