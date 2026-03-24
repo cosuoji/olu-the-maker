@@ -11,7 +11,7 @@ export const FeatureArticle = ({ date, title, imgSrc, slug }) => (
         <img
           src={imgSrc}
           alt={title}
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+          className="w-full h-full object-cover  group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
         />
       </div>
       <div className="flex flex-col">
@@ -48,7 +48,7 @@ export const Article = ({
         <img
           src={imgSrc}
           alt={headline}
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+          className="w-full h-full object-cover  group-hover:grayscale-0 transition-all duration-1000"
         />
         {/* Subtle overlay on hover */}
         <div className="absolute inset-0 bg-atelier-ink/0 group-hover:bg-atelier-ink/5 transition-colors duration-700" />

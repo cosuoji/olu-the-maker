@@ -15,9 +15,19 @@ export const ResetPasswordEmail = ({ resetLink }) => (
   <Html>
     <Body style={mainStyle}>
       <Container style={containerStyle}>
+        <Section style={logoSection}>
+          <Text style={logoText}>
+            Olú{" "}
+            <span style={{ fontStyle: "normal", fontWeight: "400" }}>
+              The Maker
+            </span>
+          </Text>
+        </Section>
+
+        <Hr style={hrStyle} />
         <Heading style={h1Style}>Security Credentials.</Heading>
         <Text style={textStyle}>
-          A request was made to reset your studio password.
+          A request was made to reset your password with us.
         </Text>
         <Section style={btnSection}>
           <Link href={resetLink} style={buttonStyle}>
@@ -87,4 +97,24 @@ const smallTextStyle = {
   opacity: "0.5",
   fontStyle: "italic",
   marginTop: "20px",
+};
+
+const logoSection = {
+  textAlign: "center",
+  paddingBottom: "20px",
+};
+
+const logoText = {
+  fontSize: "24px",
+  fontFamily: "serif",
+  fontStyle: "italic",
+  fontWeight: "bold",
+  letterSpacing: "-0.05em",
+  textTransform: "uppercase",
+  color: "#1a1a1a",
+};
+
+const hrStyle = {
+  borderTop: "1px solid #1a1a1a10",
+  margin: "20px 0",
 };

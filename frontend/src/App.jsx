@@ -25,6 +25,8 @@ import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import ResetPassword from "./pages/ResetPassword";
+import PaymentPage from "./pages/PaymentPage";
 
 //Footer Pages
 import About from "./pages/footerpages/About";
@@ -60,6 +62,8 @@ function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/payment/failed" element={<PaymentFailed />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/payment/:orderId" element={<PaymentPage />} />
             {/* Add more routes as we build */}
             //Footer Pages
             <Route path="/about" element={<About />} />

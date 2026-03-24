@@ -28,7 +28,7 @@ API.interceptors.response.use(
     if (status === 401 && !isLoginRequest) {
       localStorage.removeItem("token");
       // Use window.location only as a last resort for global auth failures
-      window.location.href = "/login";
+      window.location.href = "/auth";
     }
 
     return Promise.reject(error);

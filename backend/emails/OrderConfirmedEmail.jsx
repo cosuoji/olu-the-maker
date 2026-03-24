@@ -15,6 +15,17 @@ export const OrderConfirmedEmail = ({ orderId, totalPrice, items }) => (
   <Html>
     <Body style={mainStyle}>
       <Container style={containerStyle}>
+        <Section style={logoSection}>
+          <Text style={logoText}>
+            Olú{" "}
+            <span style={{ fontStyle: "normal", fontWeight: "400" }}>
+              The Maker
+            </span>
+          </Text>
+        </Section>
+
+        <Hr style={hrStyle} />
+
         <Heading style={h1Style}>Commission Authenticated.</Heading>
         <Text style={refStyle}>REFERENCE: {orderId}</Text>
         <Section style={summarySection}>
@@ -119,4 +130,19 @@ const btnSection = {
   textAlign: "center",
   marginTop: "30px",
   marginBottom: "30px",
+};
+
+const logoSection = {
+  textAlign: "center",
+  paddingBottom: "20px",
+};
+
+const logoText = {
+  fontSize: "24px",
+  fontFamily: "serif",
+  fontStyle: "italic",
+  fontWeight: "bold",
+  letterSpacing: "-0.05em",
+  textTransform: "uppercase",
+  color: "#1a1a1a",
 };

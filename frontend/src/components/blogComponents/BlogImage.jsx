@@ -31,7 +31,7 @@ export const BlogImage = ({
             <img
               src={optimizeUrl(src, 800)} // Smaller width for split screen
               alt={alt}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+              className="w-full h-full object-cover  group-hover:grayscale-0 transition-all duration-1000"
             />
           </div>
           {leftCaption && <Caption text={leftCaption} />}
@@ -42,7 +42,7 @@ export const BlogImage = ({
             <img
               src={optimizeUrl(pairWith.src, 800)}
               alt={pairWith.alt}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+              className="w-full h-full object-cover  group-hover:grayscale-0 transition-all duration-1000"
             />
           </div>
           {pairWith.caption && <Caption text={pairWith.caption} />}

@@ -9,18 +9,20 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 1. Prevent page refresh
     setLoading(true);
     try {
-      await API.post("/users/forgotpassword", { email });
+      // This will now send the actual email address
+      await API.post("/auth/forgotpassword", { email });
       atelierToast("Password reset email sent successfully!");
+      setEmailSent(true); // 2. Show the success state UI
     } catch (error) {
       atelierToast("Failed to send password reset email.", "error");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <main className="bg-atelier-paper min-h-screen flex items-center justify-center px-6">
       <div className="max-w-sm w-full">
@@ -53,13 +55,17 @@ const ForgotPassword = () => {
                   type="email"
                   required
                   placeholder="name@domain.com"
+                  // 3. Link the input to your state
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-transparent border-b border-atelier-ink/20 py-3 focus:border-atelier-ink outline-none transition-colors font-serif italic placeholder:opacity-20"
                 />
               </div>
 
               <button
+                type="submit" // Ensure type is submit
                 disabled={loading}
-                className="w-full bg-atelier-ink text-white py-5 ..."
+                className="w-full bg-atelier-ink text-white py-5 text-[10px] tracking-[0.3em] uppercase hover:bg-atelier-tan transition-all duration-700 disabled:opacity-50"
               >
                 {loading ? "Dispatching..." : "Send Recovery Link"}
               </button>

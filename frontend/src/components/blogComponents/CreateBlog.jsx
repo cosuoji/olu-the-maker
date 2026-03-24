@@ -350,7 +350,7 @@ const CreateBlog = () => {
                           {block.images[0].src ? (
                             <img
                               src={block.images[0].src}
-                              className="w-full h-full object-cover grayscale"
+                              className="w-full h-full object-cover "
                             />
                           ) : (
                             <div className="p-4 text-center">
@@ -393,7 +393,7 @@ const CreateBlog = () => {
                           {block.images[1].src ? (
                             <img
                               src={block.images[1].src}
-                              className="w-full h-full object-cover grayscale"
+                              className="w-full h-full object-cover "
                             />
                           ) : (
                             <div className="p-4 text-center">

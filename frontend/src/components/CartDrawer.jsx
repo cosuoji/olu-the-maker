@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Added
+import { Link, useNavigate } from "react-router-dom"; // Added
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import useCartStore from "../store/useCartStore";
@@ -139,12 +139,14 @@ const CartDrawer = () => {
                   <p className="font-serif italic opacity-40 mb-4">
                     The atelier is currently empty.
                   </p>
-                  <button
-                    onClick={() => setIsCartOpen(false)}
-                    className="text-[10px] tracking-widest uppercase border-b border-atelier-ink pb-1"
-                  >
-                    Return to Store
-                  </button>
+                  <Link to="/store">
+                    <button
+                      onClick={() => setIsCartOpen(false)}
+                      className="text-[10px] tracking-widest uppercase border-b border-atelier-ink pb-1"
+                    >
+                      Return to Store
+                    </button>
+                  </Link>
                 </div>
               )}
             </div>

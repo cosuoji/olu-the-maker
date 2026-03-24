@@ -42,10 +42,8 @@ export const registerUser = async (req, res) => {
     email,
     password,
   });
-
-  await sendEmail("WELCOME", email, { name });
-
   if (user) {
+    // 1. Send the response to the frontend immediately
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -53,6 +51,12 @@ export const registerUser = async (req, res) => {
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
+
+    // 2. Fire off the email asynchronously (Don't await it here)
+    // We attach a .catch just in case it throws an unhandled promise rejection
+    sendEmail("WELCOME", email, { name }).catch((err) =>
+      console.error("Background Email Task Failed:", err),
+    );
   } else {
     res.status(400).json({ message: "Invalid user data" });
   }
@@ -207,29 +211,69 @@ export const forgotPassword = async (req, res) => {
     return res.status(200).json({ message: "Recovery email dispatched." });
   }
 
-  // Generate Reset Token
+  // Generate Reset Token (The raw version for the email link)
   const resetToken = crypto.randomBytes(20).toString("hex");
 
-  // Hash and set to user field
+  // Hash the token to save in the database securely
   user.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  // Set expire (e.g., 1 hour)
+  // Set expiration (1 hour from now)
   user.resetPasswordExpire = Date.now() + 3600000;
 
+  // Save the user with the new token and expiration
   await user.save();
 
+  // Make sure FRONTEND_URL is defined in your Render/local .env
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-  try {
-    await sendEmail("RESET_PASSWORD", user.email, { resetLink: resetUrl });
-    res.status(200).json({ message: "Recovery email dispatched." });
-  } catch (error) {
+  // Attempt to send the email
+  const emailResponse = await sendEmail("RESET_PASSWORD", user.email, {
+    resetLink: resetUrl,
+  });
+
+  // If sendEmail returns null (meaning our previous error block caught a failure)
+  if (!emailResponse) {
+    // Rollback the DB changes so the user isn't locked out with a broken token
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    res.status(500).json({ message: "Email could not be sent" });
+
+    return res
+      .status(500)
+      .json({ message: "Email could not be sent. Please try again." });
   }
+
+  // Success
+  res.status(200).json({ message: "Recovery email dispatched." });
+};
+
+export const resetPassword = async (req, res) => {
+  // 1. Hash the token from the URL to match the one in our DB
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() }, // Check if token is still valid
+  });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ message: "Invalid or expired recovery link." });
+  }
+
+  // 2. Set new password (your User model's .pre('save') should handle the hashing)
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: "Credentials updated successfully." });
 };

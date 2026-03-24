@@ -64,15 +64,15 @@ const SingleBlogPost = () => {
     }
   };
 
-  useSEO({
-    title: currentBlog.title,
-    description: currentBlog.excerpt,
-    ogImage: currentBlog.headerImage,
-  });
-
   const handleDeleteSuccess = () => {
     navigate("/blog");
   };
+
+  useSEO({
+    title: currentBlog?.title,
+    description: currentBlog?.excerpt,
+    ogImage: currentBlog?.headerImage,
+  });
 
   if (checkingAuth || loading)
     return (
@@ -114,7 +114,7 @@ const SingleBlogPost = () => {
         <img
           src={currentBlog.headerImage}
           alt={currentBlog.title}
-          className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2000ms]"
+          className="w-full h-full object-cover  hover:grayscale-0 transition-all duration-[2000ms]"
         />
         {/* Subtle gradient to ensure the image fades nicely into the paper color below */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-atelier-paper to-transparent" />

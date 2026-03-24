@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import useUserStore from "../store/useUserStore";
+import useCartStore from "../store/useCartStore";
 import { User, History, Heart, LogOut, MapPin } from "lucide-react";
 import { atelierToast } from "../utils/Toaster";
 
 const Profile = () => {
   const { user, logout, checkAuth, updateProfile } = useUserStore();
   const [activeTab, setActiveTab] = useState("profile");
+  const { clearCart } = useCartStore();
 
   useEffect(() => {
     checkAuth();
@@ -49,6 +51,12 @@ const Profile = () => {
     } else {
       atelierToast(result.error);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    clearCart();
+    atelierToast("Logged out successfully.");
   };
 
   return (
@@ -95,7 +103,7 @@ const Profile = () => {
 
           <div className="pt-8 mt-8 border-t border-atelier-ink/10">
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-full flex items-center gap-4 px-4 py-3 text-[10px] tracking-[0.2em] uppercase font-bold opacity-50 hover:opacity-100 transition-all"
             >
               <LogOut size={16} strokeWidth={1.5} /> Sign Out
@@ -283,25 +291,30 @@ const Profile = () => {
               <div className="space-y-8">
                 {user?.orders?.map((order) => (
                   <div
-                    key={order.id}
+                    key={order?._id}
                     className="border border-atelier-ink/10 p-6 md:p-8 bg-white"
                   >
                     <div className="flex flex-wrap justify-between items-end border-b border-atelier-ink/10 pb-4 mb-6 gap-4">
                       <div>
                         <p className="text-[9px] tracking-[0.3em] uppercase opacity-50 mb-1">
-                          Order {order.id}
+                          Order {order._id}
                         </p>
-                        <p className="font-serif italic">{order.date}</p>
+                        <p className="font-serif italic">
+                          {order.updatedAt.slice(0, 10)}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="text-[9px] tracking-[0.3em] uppercase text-atelier-tan font-bold mb-1">
-                          {order.status}
+                          {order?.isDelivered ? "Delivered" : "Pending"}
                         </p>
-                        <p className="font-sans">${order.total}.00</p>
+                        <p className="text-[9px] tracking-[0.3em] uppercase text-atelier-tan font-bold mb-1">
+                          {order?.isPaid ? "Paid" : "Unpaid"}
+                        </p>
+                        <p className="font-sans">${order?.totalPrice}.00</p>
                       </div>
                     </div>
 
-                    {order.items.map((item, idx) => (
+                    {order?.orderItems?.map((item, idx) => (
                       <div
                         key={idx}
                         className="flex justify-between items-center"
@@ -311,8 +324,9 @@ const Profile = () => {
                             {item.name}
                           </h4>
                           <p className="text-[9px] tracking-widest uppercase opacity-60 mt-2">
-                            Size: {item.size} — Width: {item.width} — Last:{" "}
-                            {item.last}
+                            Size: {item?.configuration?.size} — Width:{" "}
+                            {item?.configuration?.width} — Last:{" "}
+                            {item?.configuration?.last}
                           </p>
                         </div>
                       </div>

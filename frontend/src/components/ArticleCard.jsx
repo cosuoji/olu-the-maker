@@ -10,7 +10,7 @@ const ArticleCard = ({ article }) => {
         <img
           src={article.headerImage}
           alt={article.title}
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out"
+          className="w-full h-full object-cover  group-hover:grayscale-0 transition-all duration-1000 ease-in-out"
         />
         {/* Subtle category overlay */}
         <div className="absolute top-4 left-4">

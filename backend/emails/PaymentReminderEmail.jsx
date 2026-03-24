@@ -23,6 +23,16 @@ export const PaymentReminderEmail = ({
     </Preview>
     <Body style={mainStyle}>
       <Container style={containerStyle}>
+        <Section style={logoSection}>
+          <Text style={logoText}>
+            Olú{" "}
+            <span style={{ fontStyle: "normal", fontWeight: "400" }}>
+              The Maker
+            </span>
+          </Text>
+        </Section>
+
+        <Hr style={hrStyle} />
         <Heading style={h1Style}>Pending Authentication.</Heading>
 
         <Text style={textStyle}>Dear {name || "Client"},</Text>
@@ -152,6 +162,21 @@ const studioFooter = {
   textAlign: "center",
   color: "#1a1a1a",
   opacity: "0.4",
+};
+
+const logoSection = {
+  textAlign: "center",
+  paddingBottom: "20px",
+};
+
+const logoText = {
+  fontSize: "24px",
+  fontFamily: "serif",
+  fontStyle: "italic",
+  fontWeight: "bold",
+  letterSpacing: "-0.05em",
+  textTransform: "uppercase",
+  color: "#1a1a1a",
 };
 
 export default PaymentReminderEmail;

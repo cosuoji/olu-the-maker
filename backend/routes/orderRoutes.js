@@ -5,6 +5,7 @@ import {
   getOrderById,
   getOrders,
   updateOrderToPaid,
+  flutterwaveWebhook,
 } from "../controllers/orderController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -19,5 +20,7 @@ router.route("/").get(protect, admin, getOrders);
 
 // Update order to paid (Logged-in users only)
 router.route("/:id/pay").put(protect, updateOrderToPaid);
+
+router.post("/webhook/flutterwave", flutterwaveWebhook);
 
 export default router;

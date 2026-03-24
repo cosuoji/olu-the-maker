@@ -11,7 +11,7 @@ import { OrderConfirmedEmail } from "../emails/OrderConfirmedEmail.jsx";
 import PaymentReminderEmail from "../emails/PaymentReminderEmail.jsx";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_EMAIL = "Olu THE MAKER <studio@onboarding.resend.dev>";
+const FROM_EMAIL = "Olú The Maker <info@oluthemaker.com>";
 
 export const sendEmail = async (type, to, data) => {
   let subject, component;
@@ -46,8 +46,30 @@ export const sendEmail = async (type, to, data) => {
         />
       );
       break;
+    default:
+      console.error(`❌ Mailer Error: Unknown email type "${type}"`);
+      return null;
   }
+  try {
+    // Note: It's safer to await the render, especially if you ever use Tailwind in your emails
+    const html = await render(component);
 
-  const html = render(component);
-  return await resend.emails.send({ from: FROM_EMAIL, to, subject, html });
+    const { data: responseData, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject,
+      html,
+    });
+
+    if (error) {
+      console.error("❌ Resend API Error:", error);
+      return null;
+    }
+
+    console.log("✅ Email sent successfully:", responseData);
+    return responseData;
+  } catch (err) {
+    console.error("❌ Mailer Execution Error:", err);
+    return null;
+  }
 };

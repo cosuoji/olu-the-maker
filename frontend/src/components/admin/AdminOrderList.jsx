@@ -15,10 +15,12 @@ const AdminOrderList = () => {
     setSendingId(null);
   };
 
+  console.log(orders);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const { data } = await API.get("/orders");
+        console.log(data);
         setOrders(data);
         setLoading(false);
       } catch (error) {

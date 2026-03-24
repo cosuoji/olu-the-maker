@@ -87,7 +87,7 @@ export default function Blog() {
           <img
             src={featuredBlog.headerImage}
             alt={featuredBlog.title}
-            className="w-full h-full object-cover grayscale opacity-80"
+            className="w-full h-full object-cover  opacity-80"
           />
           {/* Subtle Overlay for Readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-atelier-ink/80 via-transparent to-transparent" />

@@ -15,14 +15,25 @@ export const WelcomeEmail = ({ name }) => (
   <Html>
     <Body style={mainStyle}>
       <Container style={containerStyle}>
-        <Heading style={h1Style}>The Studio Awaits.</Heading>
+        <Section style={logoSection}>
+          <Text style={logoText}>
+            Olú{" "}
+            <span style={{ fontStyle: "normal", fontWeight: "400" }}>
+              The Maker
+            </span>
+          </Text>
+        </Section>
+
+        <Hr style={hrStyle} />
+
+        <Heading style={h1Style}>The Olú The Maker Experience Awaits.</Heading>
         <Text style={textStyle}>Welcome, {name}.</Text>
         <Text style={textStyle}>
           You have successfully registered your access to Olu THE MAKER. This is
           a space for bespoke commissions and high-end digital assets.
         </Text>
         <Section style={btnSection}>
-          <Link href="https://yourdomain.com/store" style={buttonStyle}>
+          <Link href="https://oluthemaker.com/store" style={buttonStyle}>
             Enter the Archive
           </Link>
         </Section>
@@ -99,4 +110,20 @@ const smallTextStyle = {
   color: "#1a1a1a",
   opacity: "0.5",
   fontStyle: "italic",
+};
+
+// Add these to your styles object
+const logoSection = {
+  textAlign: "center",
+  paddingBottom: "20px",
+};
+
+const logoText = {
+  fontSize: "24px",
+  fontFamily: "serif",
+  fontStyle: "italic",
+  fontWeight: "bold",
+  letterSpacing: "-0.05em",
+  textTransform: "uppercase",
+  color: "#1a1a1a",
 };

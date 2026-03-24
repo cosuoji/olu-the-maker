@@ -8,6 +8,7 @@ import {
   manageWishlist,
   getUsers,
   forgotPassword,
+  resetPassword,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 import { sendEmail } from "../utils/mailer.jsx";
@@ -16,6 +17,7 @@ import Order from "../models/orderModel.js";
 router.post("/", registerUser);
 router.post("/login", authUser);
 router.post("/forgotpassword", forgotPassword);
+router.put("/resetpassword/:resetToken", resetPassword);
 
 // Profile & Update
 router
